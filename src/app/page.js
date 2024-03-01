@@ -27,7 +27,7 @@ export default function Home() {
 
       {
         taks.map((task) => (
-            <Card key={task.id} className={`col-span-6 md:col-span-4 xl:col-span-3 ${task.color ? `bg-[#${task.color}]` : "" } `}>
+            <Card style={{background: `#${task.color}`}} key={task.id} className="col-span-6 md:col-span-4 xl:col-span-3">
                 <CardHeader className="justify-between">
                   <div className="flex gap-5">
                     <div className="flex flex-col gap-1 items-start justify-center">
