@@ -1,7 +1,8 @@
 'use client'
 
-import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { FiPlus } from "react-icons/fi";
 
 export default function Home() {
 
@@ -13,8 +14,15 @@ export default function Home() {
             .then(json => setTaks(json))
   }, [])
 
+  const {isOpen, onOpen, onClose} = useDisclosure();
+
   return (
     <main className="mx-20">
+
+      <Button onPress={onOpen} radius="full" isIconOnly className="text-2xl float-right">
+        <FiPlus />
+      </Button>
+      
       <div className="grid grid-cols-12 gap-5">
 
       {
@@ -48,6 +56,45 @@ export default function Home() {
         ))
       }
       </div>
+
+      <Modal 
+        size="2xl" 
+        isOpen={isOpen} 
+        onClose={onClose} 
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Registrar tarea</ModalHeader>
+              <ModalBody>
+                <p> 
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
+                  dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. 
+                  Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. 
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Cerrar
+                </Button>
+                <Button color="primary" onPress={onClose}>
+                  Guardar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </main>
   );
 }
