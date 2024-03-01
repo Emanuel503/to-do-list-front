@@ -19,11 +19,11 @@ export default function Home() {
 
       {
         taks.map((task) => (
-            <Card key={task.id} className="col-span-6 md:col-span-4 xl:col-span-3">
+            <Card key={task.id} className={`col-span-6 md:col-span-4 xl:col-span-3 ${task.color ? `bg-[#${task.color}]` : "" } `}>
                 <CardHeader className="justify-between">
                   <div className="flex gap-5">
                     <div className="flex flex-col gap-1 items-start justify-center">
-                      <h4 className="text-medium font-semibold leading-none text-white">{task.title ? task.title : "Sin titulo" }</h4>
+                      <h4 className="font-semibold leading-none text-white">{task.title ? task.title : "Sin titulo" }</h4>
                     </div>
                   </div>
                 </CardHeader>
@@ -33,7 +33,7 @@ export default function Home() {
                   </p>
                   {
                     task.start_date ?
-                      <span className="pt-2">
+                      <span className="absolute bottom-0 pt-4">
                         <p>Fecha de inicio: {task.start_date}</p>
                         <p>Fecha de fin: {task.start_date}</p>
                       </span> 
