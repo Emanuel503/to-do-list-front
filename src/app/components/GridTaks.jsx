@@ -8,29 +8,24 @@ import { formatDate } from "../utils/funcionts";
 export default function GridTaks() {
 
   const [taks, setTaks] = useState([])
+  
+  const [categories, setCategories] = useState([])
 
   const [load, setLoad] = useState(true)
 
   useEffect(() => {
-    fetch('http://127.0.0.1:9000/api/tasks')
-            .then(response => response.json())
-            .then(json => {
-              setLoad(false)
-              setTaks(json)
-            })
+    Promise.all([
+      fetch('http://127.0.0.1:9000/api/tasks').then(response => response.json()),
+      fetch('http://127.0.0.1:9000/api/categories').then(response => response.json())
+    ]).then(([tasksJson, categoriesJson]) => {
+      setTaks(tasksJson);
+      setCategories(categoriesJson);
+      setLoad(false);
+    }).catch(error => {
+      console.error('Error en fetch:', error);
+    });
   }, [])
-
-  const [categories, setCategories] = useState([])
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:9000/api/categories')
-            .then(response => response.json())
-            .then(json => {
-              setLoad(false)
-              setCategories(json)
-            })
-  }, [])
-
+  
   return (
     <>
       {
