@@ -1,6 +1,6 @@
 'use client'
 
-import {Card, CardHeader, CardBody, CardFooter, Button} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Spinner, Button} from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { FaClock } from "react-icons/fa";
 import { formatDate } from "../utils/funcionts";
@@ -9,20 +9,58 @@ export default function GridTaks() {
 
   const [taks, setTaks] = useState([])
 
+  const [load, setLoad] = useState(true)
+
   useEffect(() => {
-    fetch('http://127.0.0.1:9000/api/task')
+    fetch('http://127.0.0.1:9000/api/tasks')
             .then(response => response.json())
-            .then(json => setTaks(json))
+            .then(json => {
+              setLoad(false)
+              setTaks(json)
+            })
+  }, [])
+
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:9000/api/categories')
+            .then(response => response.json())
+            .then(json => {
+              setLoad(false)
+              setCategories(json)
+            })
   }, [])
 
   return (
     <>
       {
         taks.length == 0 && 
-        <div className="flex flex-col gap-6 items-center justify-center w-full p-xl-0 ">
-            <h3 className="font-semibold text-2xl">No hay tareas registradas</h3>
+        <div className="flex justify-center w-full p-xl-0">
+            {
+              load &&
+              <div className="flex items-center">
+                <Spinner size="lg" label="Cargando..." color="primary" />
+              </div>
+            }
+
+            {
+              (taks.length == 0 && !load) && 
+              <h3 className="font-semibold text-2xl">No hay tareas registradas</h3>
+            }
         </div>
       }
+
+      <div className="flex gap-x-3 flex-row mb-6">
+        {
+          categories.map((category, index) => (
+            <Button size="md" key={category + index} radius="full" className="flex flex-row items-center justify-between">
+              {category.category ? category.category : "Sin categoria"}
+              <span className="bg-gray-500 h-5 w-5 rounded-full text-small">{category.count}</span>
+            </Button>
+          ))
+        }
+      </div>
+
      <div className="grid grid-cols-12 gap-6">
         {
           taks.map((task) => (
