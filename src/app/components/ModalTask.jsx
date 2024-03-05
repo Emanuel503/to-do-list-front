@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { FiPlus } from "react-icons/fi";
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Input} from "@nextui-org/react";
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Input, AutocompleteItem, Autocomplete} from "@nextui-org/react";
 
 export default function ModalTask() {
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -31,6 +31,14 @@ export default function ModalTask() {
                       label="Descripcion"
                       placeholder="Escribe tu descripcion"
                   />
+
+                  {/* <Autocomplete  
+                    label="Categoria" 
+                    variant="bordered"
+                    allowsCustomValue={true}
+                  >
+                    {/* {(categories) => <AutocompleteItem key={item.category}>{item.category}</AutocompleteItem>} */}
+                  {/* </Autocomplete> */}
                 </form>
               </ModalBody>
               <ModalFooter>
