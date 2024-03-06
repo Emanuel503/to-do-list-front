@@ -4,33 +4,13 @@ import {Card, CardHeader, CardBody, CardFooter, Button, Spinner} from "@nextui-o
 import { FaClock } from "react-icons/fa";
 import { formatDate } from "../utils/funcionts";
 import { useTaskContext } from "../provider/TasksProvider";
-import NavCategories from "./NavCategories";
 
 export default function GridTaks() {
 
-  const {taks, categories, load} = useTaskContext();
+  const { taks, load } = useTaskContext();
   
   return (
     <>
-      {
-          taks.length == 0 && 
-          <div className="flex justify-center w-full p-xl-0">
-              {
-                load &&
-                <div className="flex items-center">
-                  <Spinner size="lg" label="Cargando..." color="primary" />
-                </div>
-              }
-
-              {
-                (taks.length == 0 && !load) && 
-                <h3 className="font-semibold text-2xl">No hay tareas registradas</h3>
-              }
-          </div>
-        }
-
-      <NavCategories/>
-
      <div className="grid grid-cols-12 gap-6">
         {
           taks.map((task) => (
@@ -67,6 +47,10 @@ export default function GridTaks() {
           ))
         }
       </div>
+      {
+        (taks.length == 0 && !load) && 
+        <h3 className="font-semibold text-2xl">No hay tareas registradas</h3>
+      }
     </>
   )
 }
