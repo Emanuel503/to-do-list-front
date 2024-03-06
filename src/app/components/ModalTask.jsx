@@ -3,9 +3,12 @@
 import React from 'react'
 import { FiPlus } from "react-icons/fi";
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Input, AutocompleteItem, Autocomplete} from "@nextui-org/react";
+import { useTaskContext } from '../provider/TasksProvider';
 
 export default function ModalTask() {
   const {isOpen, onOpen, onClose} = useDisclosure();
+
+  const {categories} = useTaskContext();
 
   return (
     <>
@@ -25,20 +28,23 @@ export default function ModalTask() {
               <>
               <ModalHeader className="flex flex-col gap-1">Registrar tarea</ModalHeader>
               <ModalBody>
-                <form>  
-                  <Input className="mb-4" type="text" label="Titulo" name="title" placeholder="Escribe el titulo" />
+                <form className=' flex flex-col gap-y-3'>  
+                  <Input type="text" label="Titulo" name="title" placeholder="Escribe el titulo" />
                   <Textarea
                       label="Descripcion"
-                      placeholder="Escribe tu descripcion"
+                      placeholder="Escribe una descripcion"
                   />
 
-                  {/* <Autocomplete  
+                  <Autocomplete  
                     label="Categoria" 
-                    variant="bordered"
                     allowsCustomValue={true}
                   >
-                    {/* {(categories) => <AutocompleteItem key={item.category}>{item.category}</AutocompleteItem>} */}
-                  {/* </Autocomplete> */}
+                    {
+                      categories.map((item)=> (
+                        <AutocompleteItem key={item.category}>{item.category}</AutocompleteItem>
+                      ))
+                    }
+                  </Autocomplete>
                 </form>
               </ModalBody>
               <ModalFooter>

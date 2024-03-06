@@ -1,30 +1,13 @@
 'use client'
 
 import {Card, CardHeader, CardBody, CardFooter, Spinner, Button} from "@nextui-org/react";
-import { useEffect, useState } from "react";
 import { FaClock } from "react-icons/fa";
 import { formatDate } from "../utils/funcionts";
+import { useTaskContext } from "../provider/TasksProvider";
 
 export default function GridTaks() {
-
-  const [taks, setTaks] = useState([])
   
-  const [categories, setCategories] = useState([])
-
-  const [load, setLoad] = useState(true)
-
-  useEffect(() => {
-    Promise.all([
-      fetch('http://127.0.0.1:9000/api/tasks').then(response => response.json()),
-      fetch('http://127.0.0.1:9000/api/categories').then(response => response.json())
-    ]).then(([tasksJson, categoriesJson]) => {
-      setTaks(tasksJson);
-      setCategories(categoriesJson);
-      setLoad(false);
-    }).catch(error => {
-      console.error('Error en fetch:', error);
-    });
-  }, [])
+  const {taks, categories, load} = useTaskContext();
   
   return (
     <>
