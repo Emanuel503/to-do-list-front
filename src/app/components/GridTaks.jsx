@@ -1,6 +1,6 @@
 'use client'
 
-import {Card, CardHeader, CardBody, CardFooter, Button, Spinner} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
 import { FaClock } from "react-icons/fa";
 import { formatDate } from "../utils/funcionts";
 import { useTaskContext } from "../provider/TasksProvider";
