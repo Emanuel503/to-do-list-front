@@ -6,7 +6,7 @@ import LoadTask from "./components/LoadTask";
 
 export default function Home() {
   return (
-    <main className="mx-20">
+    <main className="mx-4 md:mx-20">
       <TasksProvider>
 
         <ModalTask/>
