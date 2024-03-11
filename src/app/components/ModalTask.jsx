@@ -22,6 +22,7 @@ export default function ModalTask() {
           size="2xl" 
           isOpen={isOpen} 
           onClose={onClose} 
+          placement="top-center"
       >
           <ModalContent>
           {(onClose) => (
@@ -38,12 +39,9 @@ export default function ModalTask() {
                   <Autocomplete  
                     label="Categoria" 
                     allowsCustomValue={true}
+                    defaultItems={categories}
                   >
-                    {
-                      categories.map((item)=> (
-                        <AutocompleteItem key={item.category}>{item.category}</AutocompleteItem>
-                      ))
-                    }
+                    {(item) => <AutocompleteItem key={item.category}>{item.category}</AutocompleteItem>}
                   </Autocomplete>
                 </form>
               </ModalBody>
