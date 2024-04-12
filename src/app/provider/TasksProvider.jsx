@@ -18,8 +18,8 @@ export default function TasksProvider({children}) {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://127.0.0.1:9000/api/tasks').then(response => response.json()),
-      fetch('http://127.0.0.1:9000/api/categories').then(response => response.json())
+      fetch('http://127.0.0.1:8000/api/tasks').then(response => response.json()),
+      fetch('http://127.0.0.1:8000/api/categories').then(response => response.json())
     ]).then(([tasksJson, categoriesJson]) => {
       setTaks(tasksJson);
       setCategories(categoriesJson);
