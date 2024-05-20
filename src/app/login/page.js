@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-export default function page() {
+export default function Login() {
 
   const [login, setLogin] = useState(null)
 
