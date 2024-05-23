@@ -22,7 +22,7 @@ export default function ModalTask() {
 
   return (
     <>
-      <div className="flex justify-end mb-8">
+      <div className="flex justify-end mb-8 mx-4 md:mx-20">
           <Button onPress={onOpen} radius="full" isIconOnly className="text-2xl">
             <FiPlus />
           </Button>
