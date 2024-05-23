@@ -2,14 +2,20 @@
 
 import React, { useState } from 'react'
 import { FaUser } from "react-icons/fa";
-import {Button, Input} from "@nextui-org/react";
+import {Button, Input, Spinner} from "@nextui-org/react";
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
 
+  const router = useRouter()
+
   const [login, setLogin] = useState(null)
+
+  const [loading, setLoading] = useState(null)
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -21,6 +27,8 @@ export default function Login() {
   } = useForm()
 
   const onSubmit = (data) => {
+    setLoading(true)
+
     const options = {
       method: 'POST',
       headers: {
@@ -32,15 +40,21 @@ export default function Login() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, options)
     .then(response => response.json())
     .then(data => {
-      if(data.code == 401){
-        setLogin(false)
-      }else{
-        setLogin(true)
+      if (!data.ok) {
+        if(data.code == 401){
+          setLogin(false)
+        }else{
+          setLogin(true)
+          Cookies.set('token', data.data.access_token);
+          Cookies.set('user', JSON.stringify(data.data.user));
+          router.push('/')
+        }
       }
     })
     .catch(error => {
       console.error('Error al enviar la petición:', error);
       setLogin(false)
+      setLoading(false)
     });
   }
   return (
@@ -86,8 +100,12 @@ export default function Login() {
             {...register("password", {required: true})}
           />
 
-          <Button type='submit' size='lg' className='bg-emerald-600 font-bold text-white mb-5'>
+          <Button type='submit' size='lg' className='bg-emerald-600 font-bold text-white mb-5' isDisabled={loading ? true : false} >
             Iniciar Sesion
+            {
+              loading == true &&
+              <Spinner size="sm" color="default" />
+            }
           </Button>
 
           {login == false && <p className='text-red-500 text-sm'>Correo o contraseña es incorrecta</p>}
