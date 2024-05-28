@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-org/react";
+import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
 import Cookies from 'js-cookie';
 import { IoIosArrowDown } from "react-icons/io";
 import { useRouter } from 'next/navigation'
+import Link from 'next/link';
 
 export default function Nav() {  
 
@@ -52,10 +53,13 @@ export default function Nav() {
 
   return (
     <Navbar className='bg-emerald-700 mb-12'>
-      <NavbarBrand>
+      <NavbarContent className="sm:hidden" justify="start">
+        <NavbarMenuToggle />
+      </NavbarContent>
+      <NavbarBrand className="justify-end sm:justify-start">
         <h1 className="text-2xl text-white font-semibold">Tasks App</h1>
       </NavbarBrand>
-      <NavbarContent justify="end">
+      <NavbarContent className="hidden sm:flex"  justify="end">
         <Dropdown>
           <NavbarItem>
             <DropdownTrigger>
@@ -66,7 +70,7 @@ export default function Nav() {
                 endContent={<IoIosArrowDown/>}
                 variant="light"
               >
-                <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d"/>
+                <Avatar src={`${user?.image ? `${process.env.NEXT_PUBLIC_API_URL}/storage/images/${user?.image}`: ''}`}/>
                 {user?.name}
               </Button>
             </DropdownTrigger>
@@ -83,6 +87,12 @@ export default function Nav() {
               Profile
             </DropdownItem>
             <DropdownItem
+              key="configuration"
+              href='configuration'
+            >
+              Configuration
+            </DropdownItem>
+            <DropdownItem
               key="logout"
               onClick={() => handdleLogout()}
             >
@@ -91,6 +101,40 @@ export default function Nav() {
           </DropdownMenu>
         </Dropdown>
       </NavbarContent>
+
+      <NavbarMenu>
+          <NavbarMenuItem>
+            <Link
+              className="w-full"
+              href="profile"
+              color='foreground'
+              size="lg"
+            >
+              Profile
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link
+              className="w-full"
+              href="configuration"
+              color='foreground'
+              size="lg"
+            >
+              Configuration
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link
+              className="w-full text-danger-400"
+              href="#"
+              color='danger'
+              size="lg"
+              onClick={() => handdleLogout()}
+            >
+              Logout
+            </Link>
+          </NavbarMenuItem>
+      </NavbarMenu>
     </Navbar>
   )
 }
