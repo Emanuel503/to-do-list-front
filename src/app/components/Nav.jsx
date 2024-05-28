@@ -11,6 +11,8 @@ export default function Nav() {
 
   const router = useRouter()
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -52,9 +54,12 @@ export default function Nav() {
   }
 
   return (
-    <Navbar className='bg-emerald-700 mb-12'>
+    <Navbar onMenuOpenChange={setIsMenuOpen} className='bg-emerald-700 mb-12'>
       <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle />
+        <NavbarMenuToggle 
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
       </NavbarContent>
       <NavbarBrand className="justify-end sm:justify-start">
         <h1 className="text-2xl text-white font-semibold">Tasks App</h1>
