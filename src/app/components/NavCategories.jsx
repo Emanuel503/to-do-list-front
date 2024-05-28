@@ -9,7 +9,7 @@ export default function NavCategories() {
   const {categories} = useTaskContext();
 
   return (
-    <nav className='flex gap-x-3 flex-row mb-6 overflow-x-auto'>
+    <nav className='flex gap-x-3 flex-row mb-6 overflow-x-auto mx-4 md:mx-20'>
       {
         categories.map((category, index) => (
           <Button size="md" key={category + index} radius="full" className="flex flex-row items-center justify-between min-w-fit">

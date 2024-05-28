@@ -8,12 +8,12 @@ import { useTaskContext } from "../provider/TasksProvider";
 export default function GridTaks() {
 
   const { taks, load } = useTaskContext();
-  
   return (
     <>
-     <div className="grid grid-cols-12 gap-6">
+     <div className="grid grid-cols-12 gap-6 mx-4 md:mx-20">
         {
-          taks.map((task) => (
+          load == false &&
+            taks['active'].map((task) => (
               <Card style={{background: `#${task.color}`}} key={task.id} className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 hover:scale-105 hover:cursor-pointer transition-transform">
                   <CardHeader className="justify-between">
                     <div className="flex gap-5">
