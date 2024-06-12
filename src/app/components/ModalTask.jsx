@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react'
 import { FiPlus } from "react-icons/fi";
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Input, AutocompleteItem, Autocomplete, DateRangePicker, DateInput, DatePicker} from "@nextui-org/react";
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Input, AutocompleteItem, Autocomplete, DatePicker} from "@nextui-org/react";
 import { useTaskContext } from '../provider/TasksProvider';
 import { useForm } from 'react-hook-form';
-import {CalendarDate} from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 
 export default function ModalTask() {
   const {isOpen, onOpen, onClose} = useDisclosure();
@@ -14,17 +14,39 @@ export default function ModalTask() {
 
   const [color, setColor] = useState('#60907e')
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm()
+  const [startDate, setStartDate] = useState(null)
 
-  const onSubmit = (data) => {console.log(data)}
+  const [endDate, setEndDate] = useState(null)
 
   const haddleColorPicker = (e) => {
     setColor(e.target.value)
+  }
+
+  const formatNumber = (n) => {
+    let num = null;
+    num = parseInt(n)
+    return num < 10? `0${num}` : `${num}`
+  }
+  const handdleCalendarStartDate = (e) => {
+    setStartDate(`${e.year}-${formatNumber(e.month)}-${formatNumber(e.day)}`);
+  }
+
+  const handdleCalendarEndDate = (e) => {
+    setEndDate(`${e.year}-${formatNumber(e.month)}-${formatNumber(e.day)}`);
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
+
+  const onSubmit = (data) => {
+    data = {
+      ...data,
+      start_date : startDate,
+      end_date : endDate
+    }
   }
 
   return (
@@ -74,12 +96,24 @@ export default function ModalTask() {
                         className='col-span-12' 
                         {...register("category")}
                       >
-                        {(item) => <AutocompleteItem key={item.category}>{item.category ? item.category : "Sin categoria"}</AutocompleteItem>}
+                        {(item, index) => <AutocompleteItem key={`${item.category}${index}`} value={item.category}>{item.category ? item.category : "Sin categoria"}</AutocompleteItem>}
                       </Autocomplete>
 
-                      <DatePicker label={"Fecha Inicio"} placeholderValue={new CalendarDate(1995, 11, 6)} {...register("start_data")} className="col-span-12 md:col-span-6" />
+                      <DatePicker 
+                        label={"Fecha Inicio"} 
+                        className="col-span-12 md:col-span-6"
+                        name='start_date'
+                        onChange={(e) => handdleCalendarStartDate(e)}
+                      />
 
-                      <DatePicker label={"Fecha Fin"} placeholderValue={new CalendarDate(1995, 11, 6)} {...register("end_date")} className="col-span-12 md:col-span-6" />
+                      <DatePicker 
+                        label={"Fecha Fin"} 
+                        className="col-span-12 md:col-span-6" 
+                        name='end_date'
+                        onChange={(e) => handdleCalendarEndDate(e)}
+                        isDisabled={!startDate ? true : false}
+                        minValue={parseDate(startDate !== null ? startDate : '2024-01-01')}
+                      />
 
                       <div className='bg-[#2a2a2d] hover:bg-[#3f3f46] rounded-xl px-3 py-1 w-max col-span-12 md:col-span-6'>
                         <h5 className='font-light text-[12px]'>Color</h5>
