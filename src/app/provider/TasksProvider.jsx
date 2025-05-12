@@ -11,39 +11,23 @@ export function useTaskContext(){
 
 export default function TasksProvider({children}) {
 
-  let token = Cookies.get('token')
-
-  const [taks, setTaks] = useState([])
-  
-  const [categories, setCategories] = useState([])
-
-  const [load, setLoad] = useState(true)
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, {
-        headers: {
-          'Authorization': `Bearer ${token}`, // Agrega el token al encabezado
-          'Content-Type': 'application/json'
-        }
-      }).then(response => response.json()),
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`, {
-        headers: {
-          'Authorization': `Bearer ${token}`, // Agrega el token al encabezado
-          'Content-Type': 'application/json'
-        }
-      }).then(response => response.json())
-    ]).then(([tasksJson, categoriesJson]) => {
-      setTaks(tasksJson.data.tasks);
-      setCategories(categoriesJson.data.categories);
-      setLoad(false);
-    }).catch(error => {
-      console.error('Error en fetch:', error);
-    });
-  }, [token])
+    setToken(Cookies.get('token'))
+
+    const getToken = async () => {
+      const tokenCookie = await Cookies.get('user');
+      if (tokenCookie) {
+        setToken(tokenCookie);
+      }
+    };
+
+    getToken();
+  }, [])
 
   return (
-    <tasksContext.Provider value={{categories, taks, load}}>
+    <tasksContext.Provider value={{token}}>
         {children}
     </tasksContext.Provider>
   )

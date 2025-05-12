@@ -3,14 +3,11 @@
 import React, { useState } from 'react'
 import { FiPlus } from "react-icons/fi";
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Input, AutocompleteItem, Autocomplete, DatePicker} from "@nextui-org/react";
-import { useTaskContext } from '../provider/TasksProvider';
 import { useForm } from 'react-hook-form';
 import { parseDate } from "@internationalized/date";
 
 export default function ModalTask() {
   const {isOpen, onOpen, onClose} = useDisclosure();
-
-  const {categories} = useTaskContext();
 
   const [color, setColor] = useState('#60907e')
 
@@ -96,7 +93,7 @@ export default function ModalTask() {
                         className='col-span-12' 
                         {...register("category")}
                       >
-                        {(item, index) => <AutocompleteItem key={`${item.category}${index}`} value={item.category}>{item.category ? item.category : "Sin categoria"}</AutocompleteItem>}
+                        {/* {(item, index) => <AutocompleteItem key={`${item.category}${index}`} value={item.category}>{item.category ? item.category : "Sin categoria"}</AutocompleteItem>} */}
                       </Autocomplete>
 
                       <DatePicker 

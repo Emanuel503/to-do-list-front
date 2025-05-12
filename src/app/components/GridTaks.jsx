@@ -1,55 +1,48 @@
 'use client'
 
-import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/react";
-import { FaClock } from "react-icons/fa";
-import { formatDate } from "../utils/funcionts";
 import { useTaskContext } from "../provider/TasksProvider";
+import { useEffect, useState } from "react";
 
 export default function GridTaks() {
 
-  const { taks, load } = useTaskContext();
+  const { token } = useTaskContext();
+  const [tasks, setTasks] = useState([])
+  const [load, setLoad] = useState(false)
+
+  useEffect(() => {
+    if (token) { // Asegúrate de que el token está disponible
+      setLoad(true);
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(tasksJson => {
+        setTasks(tasksJson); // Actualiza el estado de tasks con los datos recibidos
+        setLoad(false);
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        setLoad(false);
+      });
+    }
+  }, [token]);
+
   return (
     <>
      <div className="grid grid-cols-12 gap-6 mx-4 md:mx-20">
-        {
-          load == false &&
-            taks['active'].map((task) => (
-              <Card style={{background: `#${task.color}`}} key={task.id} className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 hover:scale-105 hover:cursor-pointer transition-transform">
-                  <CardHeader className="justify-between">
-                    <div className="flex gap-5">
-                      <div className="flex flex-col gap-1 items-start justify-center">
-                        <h4 className="font-semibold leading-none text-white text-lg">{task.title ? task.title : "Sin titulo" }</h4>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardBody className="px-3 py-0 text-small text-white">
-                    <p>
-                      {task.description}
-                    </p>
-                    {
-                      task.start_date ?
-                        <span className="pt-8">
-                          <p>Fecha de inicio: {task.start_date}</p>
-                          <p>Fecha de fin: {task.start_date}</p>
-                        </span> 
-                        : '' 
-                    }
-                  </CardBody>
-                  <CardFooter className="justify-between  text-small">
-                      <div className="flex items-center">
-                        {task.start_date || task.start_date ? <FaClock className="mr-2"/> : '' }
-                        {task.start_date ? formatDate(task.start_date, "DD/M") : ''}  
-                        {task.start_date ? formatDate(task.start_date, " - DD/M") : ''}
-                      </div>
-                      <p className="font-semibold text-white">{task.category ? task.category : 'Sin categoria'}</p>
-                  </CardFooter>
-              </Card>
-          ))
-        }
+        
       </div>
       {
-        (taks.length == 0 && !load) && 
-        <h3 className="font-semibold text-2xl">No hay tareas registradas</h3>
+        (tasks.length == 0 && load == false) && 
+        <h3 className="font-semibold text-2xl text-center">No hay tareas registradas</h3>
       }
     </>
   )
